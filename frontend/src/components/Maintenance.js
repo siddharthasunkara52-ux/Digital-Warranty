@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { getRecords, addRecord, updateRecord, deleteRecord } from '../services/maintenanceService';
 import { formatDate, toInputDate } from '../utils/dateUtils';
 import ConfirmDialog from './common/ConfirmDialog';
@@ -13,19 +13,18 @@ function Maintenance({ productId, refresh, setToast }) {
   const [editDescription, setEditDescription] = useState('');
   const [confirmId, setConfirmId] = useState(null);
 
-  const fetchRecords = async () => {
+  const fetchRecords = useCallback(async () => {
     try {
       const data = await getRecords(productId);
       setRecords(data || []);
     } catch (error) {
       setToast?.({ message: 'Unable to load maintenance history.', type: 'error' });
     }
-  };
+  }, [productId, setToast]);
 
   useEffect(() => {
     fetchRecords();
-
-  }, [productId]);
+  }, [fetchRecords]);
 
   const handleAdd = async (e) => {
     e.preventDefault();

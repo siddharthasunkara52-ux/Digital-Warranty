@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Spinner from '../Spinner';
 import Toast from '../Toast';
 import ConfirmDialog from '../common/ConfirmDialog';
@@ -12,7 +12,7 @@ function UserManagementTab() {
   const { toast, showToast } = useToast();
   const [confirmTarget, setConfirmTarget] = useState(null);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
       const data = await getAllUsers();
@@ -22,12 +22,11 @@ function UserManagementTab() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
     fetchUsers();
-
-  }, []);
+  }, [fetchUsers]);
 
   const handleDelete = async () => {
     if (!confirmTarget) return;

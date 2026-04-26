@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { addRecord, getRecords, updateRecord, deleteRecord } from '../services/maintenanceService';
 import { formatDate, toInputDate } from '../utils/dateUtils';
 import PageHeader from './common/PageHeader';
@@ -23,16 +23,7 @@ function MaintenancePanel({ products, refresh, setToast }) {
     }
   }, [products, selectedProductId]);
 
-  useEffect(() => {
-    if (selectedProductId) {
-      fetchRecords();
-    } else {
-      setRecords([]);
-    }
-
-  }, [selectedProductId]);
-
-  const fetchRecords = async () => {
+  const fetchRecords = useCallback(async () => {
     if (!selectedProductId) return;
     setLoading(true);
     try {
@@ -43,7 +34,15 @@ function MaintenancePanel({ products, refresh, setToast }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedProductId, setToast]);
+
+  useEffect(() => {
+    if (selectedProductId) {
+      fetchRecords();
+    } else {
+      setRecords([]);
+    }
+  }, [selectedProductId, fetchRecords]);
 
   const selectedProduct = products.find((p) => p._id === selectedProductId);
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Spinner from '../Spinner';
 import EmptyState from '../common/EmptyState';
 import Toast from '../Toast';
@@ -30,16 +30,16 @@ function AllProductsTab() {
   const [deleteProduct, setDeleteProduct] = useState(null);
   const { toast, showToast } = useToast();
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const data = await getAllUsers();
       setUsers(data.users || data || []);
     } catch (err) {
       console.error('Failed to load users');
     }
-  };
+  }, []);
 
-  const fetchData = async (userId = '') => {
+  const fetchData = useCallback(async (userId = '') => {
     setLoading(true);
     try {
       if (userId) {
@@ -56,13 +56,12 @@ function AllProductsTab() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
     fetchUsers();
     fetchData();
-
-  }, []);
+  }, [fetchUsers, fetchData]);
 
   const handleUserFilter = (userId) => {
     setSelectedUserId(userId);
