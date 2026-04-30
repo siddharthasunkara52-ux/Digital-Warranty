@@ -1,7 +1,11 @@
-import User from "../models/User.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { asyncHandler, ApiError } from "../middleware/errorHandler.js";
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+import {
+  ApiError,
+  asyncHandler,
+} from '../middleware/errorHandler.js';
+import User from '../models/User.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 

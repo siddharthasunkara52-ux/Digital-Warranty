@@ -1,25 +1,24 @@
-import "dotenv/config";
-import express from "express";
-import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
+import 'dotenv/config';
 
-import connectDB from "./config/db.js";
-import { errorHandler } from "./middleware/errorHandler.js";
-import authRoutes from "./routes/authRoutes.js";
-import productRoutes from "./routes/productRoutes.js";
-import maintenanceRoutes from "./routes/maintenanceRoutes.js";
-import adminRoutes from "./routes/adminRoutes.js";
-import warrantyRoutes from "./routes/warrantyRoutes.js";
-import startCronJobs from "./jobs/cronJobs.js";
+import cors from 'cors';
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+import connectDB from './config/db.js';
+import startCronJobs from './jobs/cronJobs.js';
+import { errorHandler } from './middleware/errorHandler.js';
+import adminRoutes from './routes/adminRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import maintenanceRoutes from './routes/maintenanceRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import warrantyRoutes from './routes/warrantyRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-
 
 
 app.use(
